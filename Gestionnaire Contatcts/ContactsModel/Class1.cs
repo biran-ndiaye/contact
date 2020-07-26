@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContactsModel
 {
-    public class Class1
+    public class Contacts
     {
     }
 }
