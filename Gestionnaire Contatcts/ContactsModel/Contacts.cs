@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContactsModel
 {
+    //Executer d'abord le ficher Sql pour creer une DB
     public class Contacts
     {
         //Attribut et methodes pour un Contacts
