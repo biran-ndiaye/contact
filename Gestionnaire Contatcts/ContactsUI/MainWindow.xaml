@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ContactsUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Gestionnaire de Contacts" Height="600" Width="1000" Icon="address-book-telephone-contacts-communications-vector-28530705.jpg">
     <Grid>
         
     </Grid>
