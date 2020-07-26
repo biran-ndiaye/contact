@@ -23,6 +23,27 @@ namespace ContactsUI
         public MainWindow()
         {
             InitializeComponent();
+
+            //c'est juste des tests on doit interagir avec un DB
+            string[] pays = {"All","Canada","Senegal", "Belgique","US" };
+            foreach (string pay in pays)
+            {
+                this.comboBoxPays.Items.Add(pay);
+            }
+
+            String[] critereDeTri = { "Prenom", "Nom", "Date d'ajout","Numero"};
+            foreach (string s in critereDeTri)
+            {
+                this.ComboBoxTri.Items.Add(s);
+            }
+
         }
+
+        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            this.TextBoxRechercher.Text = "";
+        }
+
+      
     }
 }

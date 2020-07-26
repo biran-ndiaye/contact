@@ -97,5 +97,15 @@
   <ItemGroup>
     <Resource Include="address-book-telephone-contacts-communications-vector-28530705.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContactsBLLLib\ContactsBLLLib.csproj">
+      <Project>{1947b5d0-5e37-41b7-bfd3-6351eb036654}</Project>
+      <Name>ContactsBLLLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ContactsModel\ContactsModel.csproj">
+      <Project>{70eef560-0e97-4cfa-bdad-2b7e32b9c040}</Project>
+      <Name>ContactsModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

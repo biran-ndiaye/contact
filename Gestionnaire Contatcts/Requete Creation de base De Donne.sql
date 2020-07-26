@@ -8,7 +8,8 @@ drop Table if exists Conatcts
 create table Contacts(
 	id int primary key clustered identity(1,1) not null,
 	numeroTelephone bigInt not null,
-	Fax bigInt not null,
+	Company varchar(10) null,
+	Fax bigInt  null,
 	nom varchar(50) not null,
 	prenom varchar(50) not null,
 	Courriel varchar(30) null,

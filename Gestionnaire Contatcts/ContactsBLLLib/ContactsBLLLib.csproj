@@ -44,5 +44,15 @@
     <Compile Include="ContactactsManger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContactsDALLib\ContactsDALLib.csproj">
+      <Project>{59ae3a7a-46ce-46a3-8b4a-0328aa0b75bd}</Project>
+      <Name>ContactsDALLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ContactsModel\ContactsModel.csproj">
+      <Project>{70eef560-0e97-4cfa-bdad-2b7e32b9c040}</Project>
+      <Name>ContactsModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
