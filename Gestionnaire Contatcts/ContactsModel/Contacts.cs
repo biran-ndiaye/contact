@@ -8,6 +8,7 @@ namespace ContactsModel
 {
     public class Contacts
     {
-        //Attribut et methodes pour un Contact
+        //Attribut et methodes pour un Contacts
+
     }
 }
