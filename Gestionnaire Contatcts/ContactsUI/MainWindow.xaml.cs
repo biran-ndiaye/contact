@@ -44,6 +44,9 @@ namespace ContactsUI
             this.TextBoxRechercher.Text = "";
         }
 
-      
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
