@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ContactsBLLLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,15 @@ namespace ContactsUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ContactactsManger contactactsManger;
+
         public MainWindow()
         {
             InitializeComponent();
+            this.contactactsManger = new ContactactsManger();
+
+
+
 
             //c'est juste des tests on doit interagir avec un DB
             string[] pays = {"All","Canada","Senegal", "Belgique","US" };
@@ -44,9 +51,9 @@ namespace ContactsUI
             this.TextBoxRechercher.Text = "";
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            //this.ListeContact.Text += "\n" + this.contactactsManger.GetStateConnection();
         }
     }
 }

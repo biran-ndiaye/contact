@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ContactsDALLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,19 @@ namespace ContactsBLLLib
 {
     public class ContactactsManger
     {
-        private string nom;
-        private string prenom;
-        private int age;
-        private string 
+        public ContactsServices contactsServices;
+
+        public ContactactsManger()
+        {
+            this.contactsServices = new ContactsServices();
+        }
+
+        //tester l'etat de la connection
+        /*public string GetStateConnection()
+        {
+            return this.contactsServices.EtatConnection();
+        }*/
+
         //Ajout de contact
         public void AjouterContacts()
         {
