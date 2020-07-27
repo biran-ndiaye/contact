@@ -33,6 +33,7 @@ create table Contacts(
 	nom varchar(50) not null,
 	prenom varchar(50) not null,
 	numeroTelephone bigInt not null,
+	Fax string null,
 	Company varchar(10) null,
 	DateDeNaissance DateTime  not null,
 	Courriel varchar(30) not null,
