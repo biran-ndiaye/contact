@@ -5,7 +5,7 @@ go
 create database GestionContacts
 go
 use GestionContacts
-go
+
 --Creation de la table utilisateur
 drop table if exists Users
 create table Users(
@@ -18,6 +18,7 @@ go
 drop table  if exists Addreess
 create table Addreess(
 	id int not null primary key clustered,
+	NoAppt int null,
 	NomRue varchar(30) not null,
 	CodePostal varchar(10) not null,
 	Ville varchar(25) not null,
@@ -26,6 +27,7 @@ create table Addreess(
 --creation de la table des contacts
 go
 drop Table if exists Conatcts
+go
 create table Contacts(
 	id int primary key clustered identity(1,1) not null,
 	nom varchar(50) not null,
