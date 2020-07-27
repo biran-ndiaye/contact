@@ -8,10 +8,7 @@ namespace ContactsBLLLib
 {
     public class ContactactsManger
     {
-        private string nom;
-        private string prenom;
-        private int age;
-        private string 
+      
         //Ajout de contact
         public void AjouterContacts()
         {

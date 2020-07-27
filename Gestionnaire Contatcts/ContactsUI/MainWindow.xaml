@@ -27,7 +27,7 @@
         <Label Content="Trie des Contacts par" HorizontalAlignment="Left" Margin="35,409,0,0" VerticalAlignment="Top" Width="174"/>
         <ComboBox Name="ComboBoxTri" HorizontalAlignment="Left" VerticalAlignment="Top" Width="174" Margin="35,444,0,0" SelectedIndex="0"/>
         <TextBox HorizontalAlignment="Left" Height="329" Margin="683,110,0,0" TextWrapping="Wrap" Text="Contacts Informations:&#xD;&#xA;&#xD;&#xA;Nom:&#xD;&#xA;Prenom:&#xD;&#xA;......." VerticalAlignment="Top" Width="288" />
-        <Button Content="Add new Contact" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="796,24,0,0" Height="34" Background="#FFF1F1F1" BorderBrush="#FF9AC8D3" />
+        <Button Content="Add new Contact" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="796,24,0,0" Height="34" Background="#FFF1F1F1" BorderBrush="#FF9AC8D3" Click="Button_Click" />
         <!--Ces deux boutons doivent etres desactivees lorsqu'aucun contact n'est selectionnee-->
         <Button Content="Edit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" RenderTransformOrigin="10.307,16.917" Margin="700,514,0,0"/>
         <Button Content="Delete" HorizontalAlignment="Left" Margin="856,514,0,0" VerticalAlignment="Top" Width="115"/>
