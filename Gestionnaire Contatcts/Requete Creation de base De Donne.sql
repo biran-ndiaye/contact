@@ -1,22 +1,43 @@
 use master
-go
+
 drop database if Exists GestionContacts
 go 
 create database GestionContacts
 go
+use GestionContacts
+go
+--Creation de la table utilisateur
+drop table if exists Users
+create table Users(
+	UseName varchar(12) not null primary key Clustered,
+	Passworld varchar(20) not null 
+	
+	);
+--crestion de la table Address
+go
+drop table  if exists Addreess
+create table Addreess(
+	id int not null primary key clustered,
+	NomRue varchar(30) not null,
+	CodePostal varchar(10) not null,
+	Ville varchar(25) not null,
+	Pays varchar(25) not null,
+	);
+--creation de la table des contacts
+go
 drop Table if exists Conatcts
 create table Contacts(
 	id int primary key clustered identity(1,1) not null,
-	numeroTelephone bigInt not null,
-	Company varchar(10) null,
-	Fax bigInt  null,
 	nom varchar(50) not null,
 	prenom varchar(50) not null,
-	Courriel varchar(30) null,
+	numeroTelephone bigInt not null,
+	Company varchar(10) null,
+	DateDeNaissance DateTime  not null,
+	Courriel varchar(30) not null,
 	Profession varchar(20) null,
-	Addresse varchar(50)  null,
-	CodePostal varchar(10) null,
-	Ville varchar(25) not null,
-	 Pays varchar(25) not null
-	);
+	id_Address int null foreign key references Addreess (id)
+	
+	--UserName
+	--UsersName varchar(12) not null foreign key references Users(UseName)
 
+	);
