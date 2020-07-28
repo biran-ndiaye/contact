@@ -12,25 +12,30 @@ namespace ContactsModel
         //Attribut et methodes pour un Contacts
         public int Id { get; set; }
         public string Nom { get; set; }
-        public long numeroTelephone { get; set; }
+        public string Prenom { get; set; }
+        public string numeroTelephone { get; set; }
         public DateTime? DateNaissance { get; set; }
         public string Company { get; set; }
-        public DateTime DateDeNaissance { get; set; }
         public string Courriel { get; set; }
         public string Profession { get; set; }
         public Addresse Addresse { get; set; }
-
-        public Contacts(int id = 0, string nom = "", long numeroTelephone = 0, DateTime? dateNaissance = null, string company = "", DateTime? dateDeNaissance = null, string courriel = "", string profession = "", Addresse addresse = null)
+        public string Fax { get; set; }
+        public Contacts(int id = 0, string nom = "", string numeroTelephone = "", string company = "", string courriel = "", string profession = "", Addresse addresse = null,string prenom = "")
         {
             Id = id;
             Nom = nom;
+            Prenom = prenom;
             this.numeroTelephone = numeroTelephone;
-            DateNaissance = dateNaissance;
+            DateNaissance = DateTime.Now;
             Company = company;
-            DateDeNaissance =(DateTime)dateDeNaissance;
             Courriel = courriel;
             Profession = profession;
             Addresse = addresse;
+        }
+
+        public override string ToString()
+        {
+            return this.Prenom + "  " +this.Nom;
         }
     }
 }

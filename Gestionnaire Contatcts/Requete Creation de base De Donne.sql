@@ -9,7 +9,8 @@ use GestionContacts
 --Creation de la table utilisateur
 drop table if exists Users
 create table Users(
-	UseName varchar(12) not null primary key Clustered,
+	id int not null identity(1,1) primary key Clustered,
+	UseName varchar(12) not null  Unique,
 	Passworld varchar(20) not null 
 	
 	);
@@ -17,7 +18,7 @@ create table Users(
 go
 drop table  if exists Addreess
 create table Addreess(
-	id int not null primary key clustered,
+	id int identity(1,1) not null primary key clustered,
 	NoAppt int null,
 	NomRue varchar(30) not null,
 	CodePostal varchar(10) not null,
@@ -32,11 +33,11 @@ create table Contacts(
 	id int primary key clustered identity(1,1) not null,
 	nom varchar(50) not null,
 	prenom varchar(50) not null,
-	numeroTelephone bigInt not null,
-	Fax string null,
+	numeroTelephone varchar(15) not null,
+	Fax varchar(10) null,
 	Company varchar(10) null,
 	DateDeNaissance DateTime  not null,
-	Courriel varchar(30) not null,
+	Courriel varchar(30) not null ,--check (Courriel like '%@%'),
 	Profession varchar(20) null,
 	id_Address int null foreign key references Addreess (id)
 	

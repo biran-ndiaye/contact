@@ -21,13 +21,14 @@ namespace ContactsUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ContactactsManger contactactsManger;
+        public ContactactsManger ContactactsManger { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            this.contactactsManger = new ContactactsManger();
-
+            this.Top = 80;
+            this.Left = 300;
+            this.ContactactsManger = new ContactactsManger();
 
 
 
@@ -51,9 +52,17 @@ namespace ContactsUI
             this.TextBoxRechercher.Text = "";
         }
 
+        
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //this.ListeContact.Text += "\n" + this.contactactsManger.GetStateConnection();
+            this.Hide();
+            new AddNewContact(this).Show();
+        }
+
+        private void ListeContact_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -18,19 +18,16 @@
         <Label Content="Job Title" HorizontalAlignment="Left" Margin="35,325,0,0" VerticalAlignment="Top" Width="174"/>
         <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="174" Margin="35,360,0,0"/>
         <!--LES numeros seront ajoutees dans ce panel-->
-        <StackPanel HorizontalAlignment="Left" Height="482" VerticalAlignment="Top" Width="414" Margin="253,79,0,0">
-            <TextBox Name="ListeContact" Height="484" TextWrapping="Wrap" Text="Liste des Contacts ajoutees affichees automatiquement ici" Margin="3,0,-2.6,0"/>
-            <TextBox Height="23" TextWrapping="Wrap" Text="TextBox"/>
-
-
-        </StackPanel>
+        <StackPanel HorizontalAlignment="Left" Height="482" VerticalAlignment="Top" Width="388" Margin="253,79,0,0"/>
         <Label Content="Trie des Contacts par" HorizontalAlignment="Left" Margin="35,409,0,0" VerticalAlignment="Top" Width="174"/>
         <ComboBox Name="ComboBoxTri" HorizontalAlignment="Left" VerticalAlignment="Top" Width="174" Margin="35,444,0,0" SelectedIndex="0"/>
-        <TextBox HorizontalAlignment="Left" Height="329" Margin="683,110,0,0" TextWrapping="Wrap" Text="Contacts Informations:&#xD;&#xA;&#xD;&#xA;Nom:&#xD;&#xA;Prenom:&#xD;&#xA;......." VerticalAlignment="Top" Width="288" />
+        <TextBox HorizontalAlignment="Left" Height="329" Margin="683,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="288"  />
         <Button Content="Add new Contact" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="796,24,0,0" Height="34" Background="#FFF1F1F1" BorderBrush="#FF9AC8D3" Click="Button_Click" />
         <!--Ces deux boutons doivent etres desactivees lorsqu'aucun contact n'est selectionnee-->
-        <Button Content="Edit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" RenderTransformOrigin="10.307,16.917" Margin="700,514,0,0"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="856,514,0,0" VerticalAlignment="Top" Width="115"/>
+        <Button Name="BtnEdit" Content="Edit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" RenderTransformOrigin="10.307,16.917" Margin="700,514,0,0"/>
+        <Button Name="BtnDelete" Content="Delete" HorizontalAlignment="Left" Margin="856,514,0,0" VerticalAlignment="Top" Width="115"/>
+        <ListBox Name="ListBoxContact" HorizontalAlignment="Left" Height="442" VerticalAlignment="Top" Width="388" Margin="253,96,0,0"/>
+        <Label Content="Information Contact" HorizontalAlignment="Left" Margin="683,80,0,0" VerticalAlignment="Top" Width="248"/>
 
 
 
