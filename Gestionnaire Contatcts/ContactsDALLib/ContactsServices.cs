@@ -18,9 +18,9 @@ namespace ContactsDALLib
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays " +
+                    cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
                                       "from Contacts" +
-                                      "inner join Addreess on Contacts.id_Address = Addreess.id ";
+                                      "left join Addreess on Contacts.id_Address = Addreess.id ";
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -103,6 +103,15 @@ namespace ContactsDALLib
                             else
                             {
                                 contact.Addresse.Pays = null;
+                            }
+
+                            if(reader.GetValue(14) != DBNull.Value)
+                            {
+                                contact.Addresse.Id = null;
+                            }
+                            else
+                            {
+                                contact.Addresse.Id = reader.GetInt32(14);
                             }
 
                             lst.Add(contact);
@@ -270,11 +279,10 @@ namespace ContactsDALLib
                     }
                     else
                     {
-                        object id_add = null;
                         using (SqlCommand cmd1 = conn.CreateCommand())
                         {
                             //on peut mieux approfondir en testant si cette contact habite avec un autre contact
-                            cmd1.CommandText = "update  Addreess set NoAppt = @noAppt, NomRue = @nomRue, CodePostal = @codePostal, Ville = @ville ,Pays = @pays) ";
+                            cmd1.CommandText = "update  Addreess set NoAppt = @noAppt, NomRue = @nomRue, CodePostal = @codePostal, Ville = @ville ,Pays = @pays where id=Id_Address) ";
                             if (contacts.Addresse.NumAppt is null)
                             {
                                 cmd.Parameters.AddWithValue("noAppt", DBNull.Value);
