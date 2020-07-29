@@ -67,11 +67,15 @@ namespace ContactsUI
                 this.mainWindow.ListBoxContact.Items.Clear();
                 //on recupere toute la liste des personness des Contacts dans La DB
                 //ON Ajoute la nouvelle liste
+<<<<<<< HEAD
                 foreach (Contacts c in this.mainWindow.ContactactsManger.GetContacts())
                 {
                     this.mainWindow.ListBoxContact.Items.Add(c);
                 }
+                
+=======
 
+>>>>>>> 1cbe7a23983ef48dec21c55ca3b5fd0965435a3e
 
                 this.Hide();
                 this.mainWindow.Show();

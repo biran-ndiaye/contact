@@ -275,10 +275,18 @@ namespace ContactsDALLib
                             cmd1.Parameters.AddWithValue("codePostal", contacts.Addresse.NumAppt);
                             cmd1.Parameters.AddWithValue("ville", contacts.Addresse.NumAppt);
                             cmd1.Parameters.AddWithValue("pays", contacts.Addresse.NumAppt);
+<<<<<<< HEAD
                             cmd1.Parameters.AddWithValue("Id_Address", contacts.Id);
                             cmd1.ExecuteNonQuery();
                         }
                         
+=======
+
+                            //id_add = cmd1.ExecuteScalar();
+
+                        }
+                       // cmd.Parameters.AddWithValue("Id_Address", (int)id_add);
+>>>>>>> 1cbe7a23983ef48dec21c55ca3b5fd0965435a3e
                     }
                     cmd.ExecuteNonQuery();
                 }
