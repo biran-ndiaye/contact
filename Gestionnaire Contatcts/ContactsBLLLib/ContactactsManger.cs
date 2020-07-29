@@ -1,9 +1,11 @@
 ﻿using ContactsDALLib;
+using ContactsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace ContactsBLLLib
 {
@@ -23,28 +25,28 @@ namespace ContactsBLLLib
         }*/
 
         //Ajout de contact
-        public void AjouterContacts()
+        public static void AjoutNouveauContact(Contacts contacts)
         {
-
+            ContactsServices.AjoutNouveauContact(contacts);
         }
 
         //Edition D'un Contact existant
-        public void EditerContact()
+        public void EditerContact(Contacts contacts)
         {
-
+            contactsServices.EditContact(contacts);
         }
 
 
         //Suppression de contact
-        public void suprrimerContact()
+        public void suprrimerContact(Contacts contacts)
         {
-
+            contactsServices.SupprimerContact(contacts);
         }
 
         //Affichage de tous Les Contacts
         public void Afficher()
         {
-
+            
         }
 
         //Rechercher D'un Contact selon certains criteres

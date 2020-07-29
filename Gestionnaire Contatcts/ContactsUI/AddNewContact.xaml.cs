@@ -31,7 +31,7 @@ namespace ContactsUI
             //Recharger directement les contacts qui sont dans la base de donnee
         }
 
-       
+
 
 
         //bouton ajouter
@@ -45,35 +45,35 @@ namespace ContactsUI
             contacts.Fax = GetSaisi(this.TxtBoxFax, null);
             contacts.Company = GetSaisi(this.TxtBoxCompany, null);
             contacts.Profession = GetSaisi(this.TxtBoxProfession, null);
-            
+
             //A checker
             if (GetSaisi(this.TxtBoxDateDeNaissance, this.lblDateDeNaissanceRequis) != null)
             {
-                contacts.DateNaissance =Convert.ToDateTime( GetSaisi(this.TxtBoxDateDeNaissance, this.lblDateDeNaissanceRequis));
+                contacts.DateNaissance = Convert.ToDateTime(GetSaisi(this.TxtBoxDateDeNaissance, this.lblDateDeNaissanceRequis));
             }
 
             //on suppose d'abord aue l'addresse est null
             contacts.Addresse = null;
             //pour l'instant je considere pas l'enregistrement des adrees
-            if (contacts.Prenom != null && contacts.Nom != null && contacts.numeroTelephone != null && contacts.Courriel!= null && contacts.DateNaissance != null)
+            if (contacts.Prenom != null && contacts.Nom != null && contacts.numeroTelephone != null && contacts.Courriel != null && contacts.DateNaissance != null)
             {
 
 
 
                 //on ajoute a la DB le contact ajoute  
-                this.mainWindow.ContactactsManger.AjouterContacts(contacts);
+               // this.mainWindow.ContactactsManger.AjouterContacts(contacts);
 
                 //on recupere toute la liste des personness des Contacts dans La DB
                 //clear La liste BoX
                 //ON Ajoute la nouvelle liste
-                
+
 
                 this.Hide();
                 this.mainWindow.Show();
-                
+
             }
 
-           
+
         }
 
         //recuperer la chaine saisie pour les valuers obligatoire
@@ -83,14 +83,14 @@ namespace ContactsUI
         /// <param name="txtSaisi"> text saaisi dans un champs</param>
         /// <param name="champsObligatoire">si c'est obligatoire (true) ou optionnel (false)</param>
         /// <returns></returns>
-        public string GetSaisi(TextBox txtSaisi ,Label lblRequis )
+        public string GetSaisi(TextBox txtSaisi, Label lblRequis)
         {
             string saisi = null;
-            if (string.IsNullOrWhiteSpace(txtSaisi.Text) && lblRequis !=  null ) 
+            if (string.IsNullOrWhiteSpace(txtSaisi.Text) && lblRequis != null)
             {
                 lblRequis.Content = "Champs obligatoire";
             }
-            else 
+            else
             {
                 if (string.IsNullOrWhiteSpace(txtSaisi.Text))
                 {

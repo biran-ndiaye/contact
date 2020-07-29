@@ -7,7 +7,7 @@ namespace ContactsDALLib
 {
     public class ContactsServices
     {
-        public readonly string ChaineConnexion = @"Data Source=3G9MFW2\SQLEXPRESS;Initial Catalog=GestionContacts;Integrated Security=true; Connect Timeout=30";
+        static readonly string ChaineConnexion = @"Data Source=J9DVMT32\SQLEXPRESS;Initial Catalog=GestionContacts;Integrated Security=true; Connect Timeout=30";
 
         //Recupere Les Contacts dans la DB
         public List<Contacts> lesContacts()
@@ -124,7 +124,7 @@ namespace ContactsDALLib
 
         //Requtes database
         //Ajout De Nouveau Contact
-        public void AjoutNouveauContact(Contacts contacts)
+        public static void AjoutNouveauContact(Contacts contacts)
         {
             
             using (SqlConnection conn = new SqlConnection(ChaineConnexion))
@@ -296,10 +296,10 @@ namespace ContactsDALLib
                             cmd1.Parameters.AddWithValue("ville", contacts.Addresse.NumAppt);
                             cmd1.Parameters.AddWithValue("pays", contacts.Addresse.NumAppt);
 
-                            id_add = cmd1.ExecuteScalar();
+                            //id_add = cmd1.ExecuteScalar();
 
                         }
-                        cmd.Parameters.AddWithValue("Id_Address", (int)id_add);
+                       // cmd.Parameters.AddWithValue("Id_Address", (int)id_add);
                     }
                     cmd.ExecuteNonQuery();
                 }
@@ -311,4 +311,6 @@ namespace ContactsDALLib
         //Trier
 
     }
+
+   
 }
