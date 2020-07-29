@@ -63,9 +63,14 @@ namespace ContactsUI
                 //on ajoute a la DB le contact ajoute  
                 this.mainWindow.ContactactsManger.AjouterContacts(contacts);
 
-                //on recupere toute la liste des personness des Contacts dans La DB
                 //clear La liste BoX
+                this.mainWindow.ListBoxContact.Items.Clear();
+                //on recupere toute la liste des personness des Contacts dans La DB
                 //ON Ajoute la nouvelle liste
+                foreach (Contacts c in this.mainWindow.ContactactsManger.GetContacts())
+                {
+                    this.mainWindow.ListBoxContact.Items.Add(c);
+                }
                 
 
                 this.Hide();

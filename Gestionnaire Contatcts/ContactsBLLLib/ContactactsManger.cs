@@ -1,4 +1,5 @@
 ﻿using ContactsDALLib;
+using ContactsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace ContactsBLLLib
 {
     public class ContactactsManger
     {
+
         public ContactsServices contactsServices;
 
         public ContactactsManger()
@@ -16,35 +18,29 @@ namespace ContactsBLLLib
             this.contactsServices = new ContactsServices();
         }
 
-        //tester l'etat de la connection
-        /*public string GetStateConnection()
-        {
-            return this.contactsServices.EtatConnection();
-        }*/
-
         //Ajout de contact
-        public void AjouterContacts()
+        public void AjouterContacts(Contacts contacts)
         {
-
+            this.contactsServices.AjoutNouveauContact(contacts);
         }
 
         //Edition D'un Contact existant
-        public void EditerContact()
+        public void ModifierContact(Contacts contacts)
         {
-
+            this.contactsServices.EditContact(contacts);
         }
 
 
         //Suppression de contact
-        public void suprrimerContact()
+        public void suprrimerContact(Contacts contact)
         {
-
+            this.contactsServices.SupprimerContact(contact);
         }
 
-        //Affichage de tous Les Contacts
-        public void Afficher()
+        //Getter tous Les Contacts
+        public List<Contacts> GetContacts()
         {
-
+            return this.contactsServices.lesContacts();
         }
 
         //Rechercher D'un Contact selon certains criteres

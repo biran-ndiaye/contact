@@ -20,7 +20,7 @@ namespace ContactsModel
         public string Profession { get; set; }
         public Addresse Addresse { get; set; }
         public string Fax { get; set; }
-        public Contacts(int id = 0, string nom = "", string numeroTelephone = "", string company = "", string courriel = "", string profession = "", Addresse addresse = null,string prenom = "")
+        /*public Contacts(int id = 0, string nom = "", string numeroTelephone = "", string company = "", string courriel = "", string profession = "",string prenom = "")
         {
             Id = id;
             Nom = nom;
@@ -30,8 +30,8 @@ namespace ContactsModel
             Company = company;
             Courriel = courriel;
             Profession = profession;
-            Addresse = addresse;
-        }
+            Addresse = new Addresse();
+        }*/
 
         public override string ToString()
         {

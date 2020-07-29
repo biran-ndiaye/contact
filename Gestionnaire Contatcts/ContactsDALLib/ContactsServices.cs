@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 
 namespace ContactsDALLib
 {
@@ -19,7 +20,7 @@ namespace ContactsDALLib
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
-                                      "from Contacts" +
+                                      "from Contacts " +
                                       "left join Addreess on Contacts.id_Address = Addreess.id ";
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -60,60 +61,39 @@ namespace ContactsDALLib
                                 contact.Profession = null;
                             }
 
-                            if(reader.GetValue(9) != null)
+                            if(reader.GetValue(9) != DBNull.Value)
                             {
                                 contact.Addresse.NumAppt = reader.GetInt16(9);
                             }
-                            else
-                            {
-                                contact.Addresse.NumAppt = null;
-                            }
+                           
 
                             if (reader.GetValue(10) != DBNull.Value)
                             {
                                 contact.Addresse.Address = reader.GetString(10);
                             }
-                            else
-                            {
-                                contact.Addresse.Address = null;
-                            }
+                            
 
                             if (reader.GetValue(11) != DBNull.Value)
                             {
                                 contact.Addresse.CodePostal = reader.GetString(11);
                             }
-                            else
-                            {
-                                contact.Addresse = null;
-                            }
-
+                           
                             if (reader.GetValue(12) != DBNull.Value)
                             {
                                 contact.Addresse.Ville = reader.GetString(12);
                             }
-                            else
-                            {
-                                contact.Addresse.Ville = null;
-                            }
-
+                           
                             if (reader.GetValue(13) != DBNull.Value)
                             {
                                 contact.Addresse.Pays = reader.GetString(13);
                             }
-                            else
-                            {
-                                contact.Addresse.Pays = null;
-                            }
+                            
 
                             if(reader.GetValue(14) != DBNull.Value)
                             {
-                                contact.Addresse.Id = null;
-                            }
-                            else
-                            {
                                 contact.Addresse.Id = reader.GetInt32(14);
                             }
-
+                            
                             lst.Add(contact);
                         }
                     }
@@ -295,11 +275,10 @@ namespace ContactsDALLib
                             cmd1.Parameters.AddWithValue("codePostal", contacts.Addresse.NumAppt);
                             cmd1.Parameters.AddWithValue("ville", contacts.Addresse.NumAppt);
                             cmd1.Parameters.AddWithValue("pays", contacts.Addresse.NumAppt);
-
-                            id_add = cmd1.ExecuteScalar();
-
+                            cmd1.Parameters.AddWithValue("Id_Address", contacts.Id);
+                            cmd1.ExecuteNonQuery();
                         }
-                        cmd.Parameters.AddWithValue("Id_Address", (int)id_add);
+                        
                     }
                     cmd.ExecuteNonQuery();
                 }
@@ -307,6 +286,8 @@ namespace ContactsDALLib
             }
 
         }
+        
+       
         //Rechercher
         //Trier
 

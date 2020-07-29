@@ -1,4 +1,5 @@
 ﻿using ContactsBLLLib;
+using ContactsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,15 @@ namespace ContactsUI
             this.Left = 300;
             this.ContactactsManger = new ContactactsManger();
 
+            //initialisons maintenant Notre ListBox avec les contact qui sont dans la base de donne
+            foreach (Contacts c in this.ContactactsManger.GetContacts())
+            {
+                this.ListBoxContact.Items.Add(c);
+            }
+
+
+
+
 
 
             //c'est juste des tests on doit interagir avec un DB
@@ -60,7 +70,9 @@ namespace ContactsUI
             new AddNewContact(this).Show();
         }
 
-        private void ListeContact_TextChanged(object sender, TextChangedEventArgs e)
+       
+
+        private void ListBoxContact_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
