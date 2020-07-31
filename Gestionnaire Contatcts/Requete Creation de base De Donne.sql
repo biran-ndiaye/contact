@@ -20,10 +20,10 @@ drop table  if exists Addreess
 create table Addreess(
 	id int identity(1,1) not null primary key clustered,
 	NoAppt int null,
-	NomRue varchar(30) not null,
-	CodePostal varchar(10) not null,
-	Ville varchar(25) not null,
-	Pays varchar(25) not null,
+	NomRue varchar(30)  null,
+	CodePostal varchar(10)  null,
+	Ville varchar(25)  null,
+	Pays varchar(25)  null,
 	);
 --creation de la table des contacts
 go

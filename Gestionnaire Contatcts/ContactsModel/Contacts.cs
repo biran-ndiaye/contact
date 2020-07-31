@@ -20,22 +20,105 @@ namespace ContactsModel
         public string Profession { get; set; }
         public Addresse Addresse { get; set; }
         public string Fax { get; set; }
-        /*public Contacts(int id = 0, string nom = "", string numeroTelephone = "", string company = "", string courriel = "", string profession = "",string prenom = "")
+       
+        public Contacts()
         {
-            Id = id;
-            Nom = nom;
-            Prenom = prenom;
-            this.numeroTelephone = numeroTelephone;
-            DateNaissance = DateTime.Now;
-            Company = company;
-            Courriel = courriel;
-            Profession = profession;
-            Addresse = new Addresse();
-        }*/
-
+            this.Addresse = new Addresse();
+        }
         public override string ToString()
         {
-            return this.Prenom + "  " +this.Nom;
+            return this.Prenom + "        " +this.Nom;
+        }
+
+        public string AfficherContact()
+        {
+            string str = "Nom  : "+this.Nom+ "\n\n";
+            str += "Prenom : " + this.Prenom+ "\n\n";
+            str += "Telephone : " + this.numeroTelephone+"\n\n";
+            DateTime date = (DateTime)this.DateNaissance;
+            str += "Date De Naissance : " + date.Year+"-"+(date.Month<10?"0":"")+ date.Month + "-"+(date.Day<10?"0":"")+date.Day+ "\n\n";
+            str += "Courriel : " + this.Courriel+ "\n\n";
+            if(this.Profession == null)
+            {
+                str += "Profession :  ---  \n\n";
+            }
+            else
+            {
+                str += "Profession : " + this.Profession+ "\n\n";
+            }
+            if (this.Company!=null)
+            {
+                str += "Company : " + this.Company + "\n\n";
+            }
+            else
+            {
+                str += "Company  : ---\n\n";
+            }
+            if (this.Fax is null)
+            {
+                str += "Fax : ---\n\n";
+            }
+            else
+            {
+                str += "Fax : " + this.Fax + "\n\n";
+            }
+            //gerer le cas des Address  depuis la DB
+            if(this.Addresse == null)
+            {
+                str += "Adresse  :  --- \n\n";
+   
+            }
+            else
+            {
+                if(this.Addresse.NumAppt != null || this.Addresse.NumAppt != 0)
+                {
+                    if (this.Addresse.Address is null)
+                    {
+                        str += "Adresse : "  + this.Addresse.NumAppt  + " ---\n\n";
+                    }
+                    else
+                    {
+                        str += "Adresse : " +"Appt "+this.Addresse.NumAppt +" "+ this.Addresse.Address+ "\n\n";
+                    }
+                }
+                else
+                {
+                    if(this.Addresse.Address is null)
+                    {
+                        str += "Adresse : ---\n\n";
+                    }
+                    else
+                    { 
+                        str += "Adresse : " + this.Addresse.Address + "\n\n";
+                    }
+                }
+                if (this.Addresse.Pays !=  null)
+                {
+                    str += "Pays  : " + this.Addresse.Pays + "\n\n";
+                }
+                else
+                {
+                    str += "Pays : ---"+"\n\n";
+                }
+                if(this.Addresse.Ville != null)
+                {
+                    str += "Ville  : " + this.Addresse.Ville + "\n\n";
+                }
+                else
+                {
+                    str += "Ville  : --- \n\n";
+                }
+
+                if (this.Addresse.CodePostal != null)
+                {
+                    str += "Code Postal  : " + this.Addresse.CodePostal + "\n\n";
+                }
+                else
+                {
+                    str += "Code Postal  : --- \n\n";
+                }
+            }
+            return str;
         }
     }
 }

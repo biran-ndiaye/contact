@@ -1,6 +1,7 @@
 ﻿using ContactsModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace ContactsUI
     public partial class AddNewContact : Window
     {
         public MainWindow mainWindow;
+        //A modifier lors de la compilation chemin acces du fichier dans le prjet  
+        public string nomFichier = @"C:\ISI\exercice\4 - C#\d05-e20-juillet-tp-blondel-biran\Gestionnaire Contatcts\LesPays.txt";
         public AddNewContact(MainWindow window)
         {
             InitializeComponent();
@@ -28,7 +31,12 @@ namespace ContactsUI
             this.Left = 300;
             this.mainWindow = window;
 
-            //Recharger directement les contacts qui sont dans la base de donnee
+            //chargement des pays
+            string[] lespays = File.ReadAllLines(nomFichier);
+            foreach (string pays in lespays)
+            {
+                this.ComboBoxPays.Items.Add(pays);
+            }
         }
 
 
@@ -50,33 +58,33 @@ namespace ContactsUI
             if (GetSaisi(this.TxtBoxDateDeNaissance, this.lblDateDeNaissanceRequis) != null)
             {
                 contacts.DateNaissance = Convert.ToDateTime(GetSaisi(this.TxtBoxDateDeNaissance, this.lblDateDeNaissanceRequis));
+                if (((DateTime)contacts.DateNaissance).Year < 1800 || (contacts.DateNaissance) > DateTime.Now)
+                {
+                    this.lblDateDeNaissanceRequis.Content = "Date Saisie invalide";
+                    contacts.DateNaissance = null;
+                }
+
             }
 
-            //on suppose d'abord aue l'addresse est null
-            contacts.Addresse = null;
+            //cas des Address ( pas optimisee)
+            contacts.Addresse.Address = GetSaisi(this.TxtBoxAddresse, null);
+            contacts.Addresse.NumAppt = Convert.ToInt32(GetSaisi(this.TxtBoxNumApp, null));
+            contacts.Addresse.Ville = GetSaisi(this.TxtBoxVille, null);
+            contacts.Addresse.CodePostal = GetSaisi(this.TxtBoxCodePost, null);
+            contacts.Addresse.Pays = this.ComboBoxPays.SelectedItem.ToString();
+
             //pour l'instant je considere pas l'enregistrement des adrees
             if (contacts.Prenom != null && contacts.Nom != null && contacts.numeroTelephone != null && contacts.Courriel != null && contacts.DateNaissance != null)
             {
-
-
-
                 //on ajoute a la DB le contact ajoute  
-               // this.mainWindow.ContactactsManger.AjouterContacts(contacts);
-
-                //clear La liste BoX
-                this.mainWindow.ListBoxContact.Items.Clear();
-                //on recupere toute la liste des personness des Contacts dans La DB
-                //ON Ajoute la nouvelle liste
-                foreach (Contacts c in this.mainWindow.ContactactsManger.GetContacts())
-                {
-                    this.mainWindow.ListBoxContact.Items.Add(c);
-                }
-
-
+                this.mainWindow.ContactactsManger.AjouterContacts(contacts);
+                //mis a jour de la liste des contacts
+                this.mainWindow.mettreAJourListeContactApresTrie(this.mainWindow.ComboBoxTri.SelectedItem.ToString());
+              
                 this.Hide();
                 this.mainWindow.Show();
-
             }
+
 
 
         }

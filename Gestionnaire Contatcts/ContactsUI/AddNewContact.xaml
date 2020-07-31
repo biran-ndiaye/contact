@@ -5,11 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ContactsUI"
         mc:Ignorable="d"
-        Title="" Height="600" Width="1000" Background="#FFD8E0EB" Icon="address-book-telephone-contacts-communications-vector-28530705.jpg">
+        Title="Gestionnaire Contacts" Height="600" Width="1000" Background="#FFD8E0EB" Icon="address-book-telephone-contacts-communications-vector-28530705.jpg">
     <Grid Margin="0,-1,-35.4,-18.6">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+        
         <Label Content="Ajouter un Contact" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="23,10,0,0" Width="182" FontWeight="Bold" FontSize="18" Foreground="#FF879699"/>
         <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="448" Stroke="Black" VerticalAlignment="Top" Width="939" Margin="23,49,0,0"/>
         <Label Content="Prénom" HorizontalAlignment="Left" Margin="53,74,0,0" VerticalAlignment="Top" Width="100"/>
@@ -19,7 +17,7 @@
         <Label Content="Adresse" HorizontalAlignment="Left" Margin="53,257,0,0" VerticalAlignment="Top" Width="100"/>
         <TextBox Name="TxtBoxAddresse" HorizontalAlignment="Left" Height="23" Margin="53,286,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="251" />
         <Label   Content="Pays&#xD;&#xA;" HorizontalAlignment="Left" Margin="53,417,0,0" VerticalAlignment="Top" Width="138" Height="25"/>
-        <ComboBox Name ="TxtBoxPays" HorizontalAlignment="Left" Margin="53,447,0,0" VerticalAlignment="Top" Width="251" Height="27" SelectedIndex="0"/>
+        <ComboBox Name ="ComboBoxPays" HorizontalAlignment="Left" Margin="53,447,0,0" VerticalAlignment="Top" Width="251" Height="27" SelectedIndex="42"/>
         <Label Content="Code postal" HorizontalAlignment="Left" Margin="615,244,0,0" VerticalAlignment="Top" Width="138"/>
         <TextBox Name="TxtBoxCodePost" HorizontalAlignment="Left" Height="23" Margin="615,275,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="251" />
         <Label Content="Nom" HorizontalAlignment="Left" Margin="615,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.401,-0.57" Width="138"/>

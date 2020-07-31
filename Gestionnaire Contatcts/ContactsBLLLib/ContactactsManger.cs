@@ -51,9 +51,9 @@ namespace ContactsBLLLib
         }
 
         //Tri Multicritere des Contacts
-        public void TriMultiCritere()
+        public List<Contacts> GetListeTriMultiCritere(string methodeTri)
         {
-
+            return this.contactsServices.ListeTrie(methodeTri);
         }
     }
 }
