@@ -52,17 +52,45 @@ namespace ContactsUI
                 this.ComboBoxTri.Items.Add(s);
             }
 
-          
+            //initialisons les combobox pays ------------------n'oublie pas de les mettre a jour apres suprime ou edit ou Add new contact
+            this.comboBoxPays.Items.Add("Tout");
+            foreach (string chaine in this.ContactactsManger.GetPays())
+            {
+                this.comboBoxPays.Items.Add(chaine);
+            }
+
+            //initialisons le combobox ville
+            this.ComboBoxVille.Items.Add("Tout");
+            foreach (string chaine in this.ContactactsManger.GetVilles())
+            {
+                this.ComboBoxVille.Items.Add(chaine);
+            }
+
+            //initialisation du combobox Profession
+            this.comboBoxProfession.Items.Add("Tout");
+            foreach (string chaine in this.ContactactsManger.GetProfessions())
+            {
+                this.comboBoxProfession.Items.Add(chaine);
+            }
+
+            //initialisation du comboBox Entreprise
+            this.comboBoxEntreprise.Items.Add("Tout");
+            foreach (string chaine in this.ContactactsManger.GetEntreprises())
+            {
+                this.comboBoxEntreprise.Items.Add(chaine);
+            }
         }
 
-       
-        //essayer de desactiver le clavier pour le champs de Information contact
-        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //fonction pour mettreAjour les ComboBox De Recherche
+        public void mettreAjourCombobox(System.Windows.Controls.ComboBox comboBox,List<string> liste)
         {
-            this.TextBoxRechercher.Text = "";
+            comboBox.Items.Clear();
+            comboBox.Items.Add("Tout");
+            foreach (string chaine in liste)
+            {
+                comboBox.Items.Add(chaine);
+            }
         }
-
-        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -100,6 +128,8 @@ namespace ContactsUI
                     this.mettreAJourListeContactApresTrie(this.ComboBoxTri.SelectedItem.ToString());
                 }
                 this.TxtInfoContact.Text = "";
+                this.BtnDelete.IsEnabled = false;
+                this.BtnEdit.IsEnabled = false;
             } 
         }
 
@@ -112,7 +142,14 @@ namespace ContactsUI
 
         private void ComboBoxTri_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.mettreAJourListeContactApresTrie(this.ComboBoxTri.SelectedItem.ToString());
+            if (this.TextBoxRechercher.Text.CompareTo("Rechercher...") == 0)
+            {
+                this.mettreAJourListeContactApresTrie(this.ComboBoxTri.SelectedItem.ToString());
+            }
+            else
+            {
+                mettreAjourLorsDesRechercherches();
+            }
         }
 
         //fonction mettre a jour liste Contact
@@ -127,6 +164,68 @@ namespace ContactsUI
             {
                 this.ListBoxContact.Items.Add(c);
             }
+        }
+
+        
+        private void BtnRechercher_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.TextBoxRechercher.Text.CompareTo("Rechercher...") != 0)
+            {
+                mettreAjourLorsDesRechercherches();
+            }
+        }
+        public void mettreAjourLorsDesRechercherches()
+        {
+            string criterePays = this.comboBoxPays.SelectedItem.ToString();
+            string critereVille = this.ComboBoxVille.SelectedItem.ToString();
+            string critereProfession = this.comboBoxProfession.SelectedItem.ToString();
+            string critereEntreprise = this.comboBoxEntreprise.SelectedItem.ToString();
+            string chaineSaisi = this.TextBoxRechercher.Text;
+            string methodeDeTri = this.ComboBoxTri.SelectedItem.ToString();
+
+            this.ListBoxContact.Items.Clear();
+            foreach (Contacts c in this.ContactactsManger.GetListeRechercher(criterePays, critereVille, critereProfession, critereEntreprise, chaineSaisi, methodeDeTri))
+            {
+                this.ListBoxContact.Items.Add(c);
+            }
+        }
+        private void TextBoxRechercher_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.TextBoxRechercher.Text.CompareTo("Rechercher...") ==0 ) 
+            {
+                this.TextBoxRechercher.Text = "";
+                this.ListBoxContact.SelectedIndex = -1;
+                this.TxtInfoContact.Text = "";
+                this.BtnDelete.IsEnabled = false;
+                this.BtnEdit.IsEnabled = false;
+            }
+            else if  ( string.IsNullOrWhiteSpace( this.TextBoxRechercher.Text) )
+            {
+                this.TextBoxRechercher.Text = "Rechercher...";
+                this.BtnDelete.IsEnabled = true;
+                this.BtnEdit.IsEnabled = true;
+            }
+        }
+
+        //---To Do charger directement les contacts lorsque combobox change
+        private void comboBoxPays_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ComboBoxVille_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void comboBoxProfession_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void comboBoxEntreprise_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

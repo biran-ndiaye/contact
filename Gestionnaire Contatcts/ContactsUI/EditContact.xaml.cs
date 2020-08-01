@@ -107,6 +107,18 @@ namespace ContactsUI
                 this.mainWindow.TxtInfoContact.Text = "";
                 this.mainWindow.TxtInfoContact.Text = contacts.AfficherContact();
                 this.mainWindow.ListBoxContact.SelectedIndex = selectedIndex;
+
+                // mis a jour des combobox
+
+                //mis a jour des combobox
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxPays, this.mainWindow.ContactactsManger.GetPays());
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.ComboBoxVille, this.mainWindow.ContactactsManger.GetVilles());
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxProfession, this.mainWindow.ContactactsManger.GetProfessions());
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxEntreprise, this.mainWindow.ContactactsManger.GetEntreprises());
+
+                //mis a jour textBox s'il y a du text
+                this.mainWindow.TextBoxRechercher.Text = "Rechercher...";
+
                 this.Hide();
                 this.mainWindow.Show();
 
@@ -134,6 +146,11 @@ namespace ContactsUI
         }
         private void Button_Click_1_Annuler(object sender, RoutedEventArgs e)
         {
+            this.mainWindow.TxtInfoContact.Text = "";
+            this.mainWindow.BtnDelete.IsEnabled = false;
+            this.mainWindow.BtnEdit.IsEnabled = false;
+            this.mainWindow.mettreAJourListeContactApresTrie(this.mainWindow.ComboBoxTri.SelectedItem.ToString());
+            this.mainWindow.TextBoxRechercher.Text = "Rechercher...";
             this.Hide();
             this.mainWindow.Show();
         }

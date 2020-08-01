@@ -45,15 +45,34 @@ namespace ContactsBLLLib
         }
 
         //Rechercher D'un Contact selon certains criteres
-        public void RechercherContact()
+        public List<Contacts> GetListeRechercher(string critereDeRechercheePays, string critereDeRechercheVille , string critereDeRechercheProfessions , string critereDeRechercheEntreprise ,string TextSaisi,string MethodeDeTri )
         {
-
+            return this.contactsServices.RechercherContact(critereDeRechercheePays, critereDeRechercheVille, critereDeRechercheProfessions, critereDeRechercheEntreprise, TextSaisi, MethodeDeTri);
         }
 
         //Tri Multicritere des Contacts
         public List<Contacts> GetListeTriMultiCritere(string methodeTri)
         {
             return this.contactsServices.ListeTrie(methodeTri);
+        }
+
+        //Get different pays
+        public  List<string> GetPays()
+        {
+            return this.contactsServices.lesPays();
+        }
+        //Get Different ville
+        public List<string> GetVilles()
+        {
+            return this.contactsServices.lesVilles();
+        }
+        public List<string> GetProfessions()
+        {
+            return this.contactsServices.LesProfessions();
+        }
+        public List<string> GetEntreprises()
+        {
+            return this.contactsServices.lesEntreprises();
         }
     }
 }

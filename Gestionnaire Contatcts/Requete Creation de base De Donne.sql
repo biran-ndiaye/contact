@@ -7,13 +7,7 @@ go
 use GestionContacts
 
 --Creation de la table utilisateur
-drop table if exists Users
-create table Users(
-	id int not null identity(1,1) primary key Clustered,
-	UseName varchar(12) not null  Unique,
-	Passworld varchar(20) not null 
-	
-	);
+
 --crestion de la table Address
 go
 drop table  if exists Addreess
@@ -41,7 +35,14 @@ create table Contacts(
 	Profession varchar(20) null,
 	id_Address int null foreign key references Addreess (id)
 	
-	--UserName
-	--UsersName varchar(12) not null foreign key references Users(UseName)
 
+	);
+go
+--creation de la table Users
+drop table if exists Users
+create table Users(
+	UseName varchar(12) not null  primary key Clustered,
+	Passworld varchar(20) not null,
+	id_Contact int not null foreign key references Contacts(id)
+	
 	);

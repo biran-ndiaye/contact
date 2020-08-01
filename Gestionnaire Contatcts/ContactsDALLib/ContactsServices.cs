@@ -125,6 +125,7 @@ namespace ContactsDALLib
             return lst;
         }
 
+        
         //Requtes database
         //Ajout De Nouveau Contact
         public  void AjoutNouveauContact(Contacts contacts)
@@ -243,7 +244,7 @@ namespace ContactsDALLib
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "delete from Contacts where Contacts.id = @id";
+                    cmd.CommandText = "delete from Contacts where id = @id";
                     cmd.Parameters.Add(new SqlParameter("id",contacts.Id));
                     cmd.ExecuteNonQuery();
                 }
@@ -363,11 +364,229 @@ namespace ContactsDALLib
 
         }
         
-       
-        //Rechercher
-        public void RechercherContact(string critereDeRecherchee)
+        //retourne les differents pays 
+        public List<string> lesPays()
         {
+            return this.GetListe("select distinct pays from Addreess");
+        }
+       
+        //retourne les villes
+        public List<string> lesVilles()
+        {
+            return this.GetListe("select distinct Ville from Addreess");
+        }
 
+        //retourne les professions
+        public List<string> LesProfessions()
+        {
+            return this.GetListe("select distinct Profession from Contacts");
+        }
+
+        //retourne les Entreprises
+        public List<string> lesEntreprises()
+        {
+            return this.GetListe("select distinct Company from Contacts");
+        }
+        //fonction pour simplifier les get des differents element
+        public List<string> GetListe(string requete)
+        {
+            List<string> lst = new List<string>();
+            using (SqlConnection conn = new SqlConnection(ChaineConnexion))
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = requete;
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetValue(0) != DBNull.Value)
+                            {
+                                string pays = reader.GetString(0);
+                                lst.Add(pays);
+                            }
+                        }
+                    }
+                }
+            }
+            return lst;
+        }
+        //Rechercher
+        public List<Contacts> RechercherContact(string critereDeRechercheePays, string critereDeRechercheVille, string critereDeRechercheProfessions, string critereDeRechercheEntreprise, string TextSaisi,string methodeDeTri)
+        {
+            List<Contacts> lst = new List<Contacts>();
+            using (SqlConnection conn = new SqlConnection(ChaineConnexion))
+            {
+                conn.Open();
+                //cas ou tous les 4 c'est Tout
+                string requete1 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                                     "from Contacts " +
+                                     "left join Addreess on Contacts.id_Address = Addreess.id" +
+                                     " where nom like @chaineSaisi+'%' or prenom like @chaineSaisi+'%' ";
+                string requete2 = requete1;
+                string requete3 = requete2;
+                string requete4 = requete3;
+
+                if (critereDeRechercheePays.CompareTo("Tout") != 0)
+                {
+                    requete1 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                                     "from Contacts " +
+                                     "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where Pays like '%'+@paysSelect+'%'  and (nom like @chaineSaisi+'%' or prenom like @chaineSaisi+'%') ";
+                }
+
+
+                if (critereDeRechercheVille.CompareTo("Tout") != 0)
+                {
+                    requete2 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                                     "from Contacts " +
+                                     "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where Ville like '%'+@villeSelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
+                }
+
+                if (critereDeRechercheProfessions.CompareTo("Tout") != 0)
+                {
+                    requete3 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                                     "from Contacts " +
+                                     "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where Profession like '%'+@professionSelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
+                }
+                
+                if (critereDeRechercheEntreprise.CompareTo("Tout") != 0)
+                {
+                    requete4= "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                                     "from Contacts " +
+                                     "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where Company like '%'+@companySelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
+                }
+               
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    //n'oubliez pas les cmd parametere
+                    if (methodeDeTri.CompareTo("Prenom Croissant") == 0)
+                    {
+                        cmd.CommandText =requete1+" intersect " + requete2 + " intersect " + requete3+ " intersect " + requete4+" order by prenom asc";
+                    }
+                    else if (methodeDeTri.CompareTo("Prenom Decroissant") == 0)
+                    {
+                        cmd.CommandText = requete1 + " intersect " + requete2 + " intersect " + requete3 + " intersect " + requete4 + " order by prenom desc";
+                    }
+                    else if (methodeDeTri.CompareTo("Nom Croissant") == 0)
+                    {
+                        cmd.CommandText = requete1 + " intersect " + requete2 + " intersect " + requete3 + " intersect " + requete4 + " order by prenom asc ";
+                    }
+                    else if (methodeDeTri.CompareTo("Nom Decroissant") == 0)
+                    {
+                        cmd.CommandText = requete1 + " intersect " + requete2 + " intersect "  + requete3 + " intersect " + requete4 + " order by prenom desc";
+                    }
+                    else
+                    {
+                        cmd.CommandText = requete1 + " intersect " + requete2 + " intersect " + requete3 + " intersect " + requete4 ;
+                    }
+
+                    cmd.Parameters.AddWithValue("paysSelect", critereDeRechercheePays);
+                    cmd.Parameters.AddWithValue("villeSelect", critereDeRechercheVille);
+                    cmd.Parameters.AddWithValue("professionSelect", critereDeRechercheProfessions);
+                    cmd.Parameters.AddWithValue("companySelect", critereDeRechercheEntreprise);
+                    cmd.Parameters.AddWithValue("chaineSaisi", TextSaisi);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Contacts contact = new Contacts();
+                            contact.Id = reader.GetInt32(0);
+                            contact.Nom = reader.GetString(1);
+                            contact.Prenom = reader.GetString(2);
+                            contact.numeroTelephone = reader.GetString(3);
+
+                            if (reader.GetValue(4) != DBNull.Value)
+                            {
+                                contact.Fax = reader.GetString(4);
+                            }
+                            else
+                            {
+                                contact.Fax = null;
+                            }
+
+                            if (reader.GetValue(5) != DBNull.Value)
+                            {
+                                contact.Company = reader.GetString(5);
+                            }
+                            else
+                            {
+                                contact.Company = null;
+                            }
+                            contact.DateNaissance = reader.GetDateTime(6);
+                            contact.Courriel = reader.GetString(7);
+
+                            if (reader.GetValue(8) != DBNull.Value)
+                            {
+                                contact.Profession = reader.GetString(8);
+                            }
+                            else
+                            {
+                                contact.Profession = null;
+                            }
+
+                            if (reader.GetValue(9) != DBNull.Value)
+                            {
+                                contact.Addresse.NumAppt = reader.GetInt32(9);
+                            }
+                            else
+                            {
+                                contact.Addresse.NumAppt = null;
+                            }
+
+                            if (reader.GetValue(10) != DBNull.Value)
+                            {
+                                contact.Addresse.Address = reader.GetString(10);
+                            }
+                            else
+                            {
+                                contact.Addresse.Address = null;
+                            }
+
+                            if (reader.GetValue(11) != DBNull.Value)
+                            {
+                                contact.Addresse.CodePostal = reader.GetString(11);
+                            }
+                            else
+                            {
+                                contact.Addresse.CodePostal = null;
+                            }
+
+                            if (reader.GetValue(12) != DBNull.Value)
+                            {
+                                contact.Addresse.Ville = reader.GetString(12);
+                            }
+                            else
+                            {
+                                contact.Addresse.Ville = null;
+                            }
+
+                            if (reader.GetValue(13) != DBNull.Value)
+                            {
+                                contact.Addresse.Pays = reader.GetString(13);
+                            }
+                            else
+                            {
+                                contact.Addresse.Pays = null;
+                            }
+
+
+                            if (reader.GetValue(14) != DBNull.Value)
+                            {
+                                contact.Addresse.Id = reader.GetInt32(14);
+                            }
+
+                            lst.Add(contact);
+                        }
+                    }
+
+                }
+            }
+            return lst;
         }
 
         //Trier
