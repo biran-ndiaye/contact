@@ -18,6 +18,17 @@ namespace ContactsBLLLib
         {
             this.contactsServices = new ContactsServices();
         }
+        //ajout de compte
+        public void AjouterCompte(Compte compte)
+        {
+            this.contactsServices.AjouterCompte(compte);
+        }
+
+        //recuperer tous les comptes
+        public List<Compte> GetUsers()
+        {
+            return this.contactsServices.LesComptes();
+        }
 
         //Ajout de contact
         public void AjouterContacts(Contacts contacts)
@@ -39,40 +50,40 @@ namespace ContactsBLLLib
         }
 
         //Getter tous Les Contacts
-        public List<Contacts> GetContacts()
+        public List<Contacts> GetContacts(Compte compte)
         {
-            return this.contactsServices.lesContacts();
+            return this.contactsServices.lesContacts(compte);
         }
 
         //Rechercher D'un Contact selon certains criteres
-        public List<Contacts> GetListeRechercher(string critereDeRechercheePays, string critereDeRechercheVille , string critereDeRechercheProfessions , string critereDeRechercheEntreprise ,string TextSaisi,string MethodeDeTri )
+        public List<Contacts> GetListeRechercher(string critereDeRechercheePays, string critereDeRechercheVille , string critereDeRechercheProfessions , string critereDeRechercheEntreprise ,string TextSaisi,string MethodeDeTri,Compte compte )
         {
-            return this.contactsServices.RechercherContact(critereDeRechercheePays, critereDeRechercheVille, critereDeRechercheProfessions, critereDeRechercheEntreprise, TextSaisi, MethodeDeTri);
+            return this.contactsServices.RechercherContact(critereDeRechercheePays, critereDeRechercheVille, critereDeRechercheProfessions, critereDeRechercheEntreprise, TextSaisi, MethodeDeTri,compte);
         }
 
         //Tri Multicritere des Contacts
-        public List<Contacts> GetListeTriMultiCritere(string methodeTri)
+        public List<Contacts> GetListeTriMultiCritere(string methodeTri,Compte compte)
         {
-            return this.contactsServices.ListeTrie(methodeTri);
+            return this.contactsServices.ListeTrie(methodeTri,compte);
         }
 
         //Get different pays
-        public  List<string> GetPays()
+        public  List<string> GetPays(Compte compte)
         {
-            return this.contactsServices.lesPays();
+            return this.contactsServices.lesPays(compte);
         }
         //Get Different ville
-        public List<string> GetVilles()
+        public List<string> GetVilles(Compte compte)
         {
-            return this.contactsServices.lesVilles();
+            return this.contactsServices.lesVilles(compte);
         }
-        public List<string> GetProfessions()
+        public List<string> GetProfessions(Compte compte)
         {
-            return this.contactsServices.LesProfessions();
+            return this.contactsServices.LesProfessions(compte);
         }
-        public List<string> GetEntreprises()
+        public List<string> GetEntreprises(Compte compte)
         {
-            return this.contactsServices.lesEntreprises();
+            return this.contactsServices.lesEntreprises(compte);
         }
     }
 }

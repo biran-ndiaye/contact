@@ -21,9 +21,13 @@ namespace ContactsModel
         public Addresse Addresse { get; set; }
         public string Fax { get; set; }
        
+        public Compte compte{ get; set; }
+       
         public Contacts()
         {
             this.Addresse = new Addresse();
+            this.compte = new Compte();
+
         }
         public override string ToString()
         {

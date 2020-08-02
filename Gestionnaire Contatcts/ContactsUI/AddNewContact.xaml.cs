@@ -53,7 +53,7 @@ namespace ContactsUI
             contacts.Fax = GetSaisi(this.TxtBoxFax, null);
             contacts.Company = GetSaisi(this.TxtBoxCompany, null);
             contacts.Profession = GetSaisi(this.TxtBoxProfession, null);
-
+            contacts.compte.Id = this.mainWindow.compte.Id;
             //A checker
             if (GetSaisi(this.TxtBoxDateDeNaissance, this.lblDateDeNaissanceRequis) != null)
             {
@@ -82,10 +82,10 @@ namespace ContactsUI
                 this.mainWindow.mettreAJourListeContactApresTrie(this.mainWindow.ComboBoxTri.SelectedItem.ToString());
 
                 //mis a jour des combobox
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxPays, this.mainWindow.ContactactsManger.GetPays());
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.ComboBoxVille, this.mainWindow.ContactactsManger.GetVilles());
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxProfession, this.mainWindow.ContactactsManger.GetProfessions());
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxEntreprise, this.mainWindow.ContactactsManger.GetEntreprises());
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxPays, this.mainWindow.ContactactsManger.GetPays(this.mainWindow.compte));
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.ComboBoxVille, this.mainWindow.ContactactsManger.GetVilles(this.mainWindow.compte));
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxProfession, this.mainWindow.ContactactsManger.GetProfessions(this.mainWindow.compte));
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxEntreprise, this.mainWindow.ContactactsManger.GetEntreprises(this.mainWindow.compte));
 
                 //mis a jour textBox s'il y a du text
                 this.mainWindow.TextBoxRechercher.Text = "Rechercher...";

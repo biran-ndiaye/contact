@@ -7,7 +7,14 @@ go
 use GestionContacts
 
 --Creation de la table utilisateur
-
+--creation de la table Users
+drop table if exists Users
+create table Users(
+	id int identity(1,1) not null primary key Clustered,
+	UseName varchar(50) not null  ,
+	Passworld varchar(30) not null
+	
+	);
 --crestion de la table Address
 go
 drop table  if exists Addreess
@@ -33,16 +40,8 @@ create table Contacts(
 	DateDeNaissance DateTime  not null,
 	Courriel varchar(30) not null ,--check (Courriel like '%@%'),
 	Profession varchar(20) null,
-	id_Address int null foreign key references Addreess (id)
-	
+	id_Address int null foreign key references Addreess (id),
+	id_Compte int not null foreign key references Users(id)  
 
 	);
-go
---creation de la table Users
-drop table if exists Users
-create table Users(
-	UseName varchar(12) not null  primary key Clustered,
-	Passworld varchar(20) not null,
-	id_Contact int not null foreign key references Contacts(id)
-	
-	);
+

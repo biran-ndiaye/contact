@@ -26,22 +26,27 @@ namespace ContactsUI
         public ContactactsManger ContactactsManger { get; set; }
         public List<Contacts> listContacts;
         public string[] critereDeTri;
-        
+        public Compte compte;
 
-        public MainWindow()
+        public MainWindow(Compte compte)
         {
             InitializeComponent();
             this.Top = 80;
             this.Left = 300;
             this.ContactactsManger = new ContactactsManger();
+            this.compte = compte;
 
             //desactive les boutons Edit et delete si aucun Conatct n'est selectionne
             this.BtnDelete.IsEnabled = false;
             this.BtnEdit.IsEnabled = false;
 
             //Recuperer tous les Contacts dans une liste
-            listContacts = this.ContactactsManger.GetContacts();
-
+            listContacts = this.ContactactsManger.GetContacts(compte);
+            //initialiser la liste des contacts
+            foreach (Contacts contacts in listContacts)
+            {
+                this.ListBoxContact.Items.Add(contacts);
+            }
 
             
             //initialisations du combobox TriMulticritere
@@ -54,28 +59,28 @@ namespace ContactsUI
 
             //initialisons les combobox pays ------------------n'oublie pas de les mettre a jour apres suprime ou edit ou Add new contact
             this.comboBoxPays.Items.Add("Tout");
-            foreach (string chaine in this.ContactactsManger.GetPays())
+            foreach (string chaine in this.ContactactsManger.GetPays(compte))
             {
                 this.comboBoxPays.Items.Add(chaine);
             }
 
             //initialisons le combobox ville
             this.ComboBoxVille.Items.Add("Tout");
-            foreach (string chaine in this.ContactactsManger.GetVilles())
+            foreach (string chaine in this.ContactactsManger.GetVilles(compte))
             {
                 this.ComboBoxVille.Items.Add(chaine);
             }
 
             //initialisation du combobox Profession
             this.comboBoxProfession.Items.Add("Tout");
-            foreach (string chaine in this.ContactactsManger.GetProfessions())
+            foreach (string chaine in this.ContactactsManger.GetProfessions(compte))
             {
                 this.comboBoxProfession.Items.Add(chaine);
             }
 
             //initialisation du comboBox Entreprise
             this.comboBoxEntreprise.Items.Add("Tout");
-            foreach (string chaine in this.ContactactsManger.GetEntreprises())
+            foreach (string chaine in this.ContactactsManger.GetEntreprises(compte))
             {
                 this.comboBoxEntreprise.Items.Add(chaine);
             }
@@ -86,6 +91,7 @@ namespace ContactsUI
         {
             comboBox.Items.Clear();
             comboBox.Items.Add("Tout");
+            comboBox.SelectedIndex = 0;
             foreach (string chaine in liste)
             {
                 comboBox.Items.Add(chaine);
@@ -140,18 +146,6 @@ namespace ContactsUI
             new EditContact(this).Show();
         }
 
-        private void ComboBoxTri_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (this.TextBoxRechercher.Text.CompareTo("Rechercher...") == 0)
-            {
-                this.mettreAJourListeContactApresTrie(this.ComboBoxTri.SelectedItem.ToString());
-            }
-            else
-            {
-                mettreAjourLorsDesRechercherches();
-            }
-        }
-
         //fonction mettre a jour liste Contact
         public void mettreAJourListeContactApresTrie(string CritereDeTri)
         {
@@ -160,7 +154,7 @@ namespace ContactsUI
 
             //on trie le contact
             //afficher le nouveau contenu
-            foreach (Contacts c in this.ContactactsManger.GetListeTriMultiCritere(CritereDeTri))
+            foreach (Contacts c in this.ContactactsManger.GetListeTriMultiCritere(CritereDeTri,this.compte))
             {
                 this.ListBoxContact.Items.Add(c);
             }
@@ -184,7 +178,7 @@ namespace ContactsUI
             string methodeDeTri = this.ComboBoxTri.SelectedItem.ToString();
 
             this.ListBoxContact.Items.Clear();
-            foreach (Contacts c in this.ContactactsManger.GetListeRechercher(criterePays, critereVille, critereProfession, critereEntreprise, chaineSaisi, methodeDeTri))
+            foreach (Contacts c in this.ContactactsManger.GetListeRechercher(criterePays, critereVille, critereProfession, critereEntreprise, chaineSaisi, methodeDeTri,this.compte))
             {
                 this.ListBoxContact.Items.Add(c);
             }
@@ -202,30 +196,36 @@ namespace ContactsUI
             else if  ( string.IsNullOrWhiteSpace( this.TextBoxRechercher.Text) )
             {
                 this.TextBoxRechercher.Text = "Rechercher...";
-                this.BtnDelete.IsEnabled = true;
-                this.BtnEdit.IsEnabled = true;
+                //on reaffiche tous les comptes
+                mettreAJourListeContactApresTrie(this.ComboBoxTri.SelectedItem.ToString());
             }
         }
 
-        //---To Do charger directement les contacts lorsque combobox change
-        private void comboBoxPays_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboBoxTri_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (this.TextBoxRechercher.Text.CompareTo("Rechercher...") == 0)
+            {
+                this.mettreAJourListeContactApresTrie(this.ComboBoxTri.SelectedItem.ToString());
+            }
+            else
+            {
+                mettreAjourLorsDesRechercherches();
+            }
         }
 
-        private void ComboBoxVille_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void comboBoxProfession_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void comboBoxEntreprise_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+            string message = $"Etes vous sur de vouloir fermer la session?? ";
+            string caption = "Error in input";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+            result = System.Windows.Forms.MessageBox.Show(message, caption, buttons);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                this.Close();
+                new LoginWindow().Show();
+            }
+            
         }
     }
 }

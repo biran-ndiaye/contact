@@ -111,10 +111,10 @@ namespace ContactsUI
                 // mis a jour des combobox
 
                 //mis a jour des combobox
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxPays, this.mainWindow.ContactactsManger.GetPays());
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.ComboBoxVille, this.mainWindow.ContactactsManger.GetVilles());
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxProfession, this.mainWindow.ContactactsManger.GetProfessions());
-                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxEntreprise, this.mainWindow.ContactactsManger.GetEntreprises());
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxPays, this.mainWindow.ContactactsManger.GetPays(this.mainWindow.compte));
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.ComboBoxVille, this.mainWindow.ContactactsManger.GetVilles(this.mainWindow.compte));
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxProfession, this.mainWindow.ContactactsManger.GetProfessions(this.mainWindow.compte));
+                this.mainWindow.mettreAjourCombobox(this.mainWindow.comboBoxEntreprise, this.mainWindow.ContactactsManger.GetEntreprises(this.mainWindow.compte));
 
                 //mis a jour textBox s'il y a du text
                 this.mainWindow.TextBoxRechercher.Text = "Rechercher...";

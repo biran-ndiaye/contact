@@ -12,8 +12,8 @@ namespace ContactsDALLib
     {
         static readonly string ChaineConnexion = @"Data Source=3G9MFW2\SQLEXPRESS;Initial Catalog=GestionContacts;Integrated Security=true; Connect Timeout=30";
 
-        //Recupere Les Contacts dans la DB
-        public List<Contacts> lesContacts()
+        //Recupere Les Contacts dans la DB du user
+        public List<Contacts> lesContacts(Compte compte)
         {
             List<Contacts> lst = new List<Contacts>();
             using (SqlConnection conn = new SqlConnection(ChaineConnexion))
@@ -21,19 +21,23 @@ namespace ContactsDALLib
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                    cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id ,id_compte " +
                                       "from Contacts " +
-                                      "left join Addreess on Contacts.id_Address = Addreess.id ";
+                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                      "where id_Compte =@idCompte";
+                    cmd.Parameters.AddWithValue("idCompte",compte.Id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             Contacts contact = new Contacts();
+                            contact.compte.Id = compte.Id;
                             contact.Id = reader.GetInt32(0);
                             contact.Nom = reader.GetString(1);
                             contact.Prenom = reader.GetString(2);
                             contact.numeroTelephone = reader.GetString(3);
-                            
+                            cmd.Parameters.AddWithValue("idCompte",compte.Id);
+
                             if (reader.GetValue(4) != DBNull.Value)
                             {
                                 contact.Fax = reader.GetString(4);
@@ -125,7 +129,48 @@ namespace ContactsDALLib
             return lst;
         }
 
+        // Ajout d'un nouveau Cmpte
+        public void AjouterCompte(Compte compte)
+        {
+            using (SqlConnection conn = new SqlConnection(ChaineConnexion))
+            {
+                conn.Open();
+                using (SqlCommand cmd= conn.CreateCommand())
+                {
+                    cmd.CommandText = "insert into Users(UseName,Passworld) values(@name,@passworld)";
+                    cmd.Parameters.AddWithValue("name",compte.UserName);
+                    cmd.Parameters.AddWithValue("Passworld", compte.Password);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         
+        //Retourne tous les comptes
+        public List<Compte> LesComptes()
+        {
+            List<Compte> comptes = new List<Compte>();
+            using (SqlConnection conn = new SqlConnection(ChaineConnexion))
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "select id,UseName,Passworld from Users";
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Compte compte = new Compte();
+                            compte.Id = reader.GetInt32(0);
+                            compte.UserName = reader.GetString(1);
+                            compte.Password = reader.GetString(2);
+                            comptes.Add(compte);
+                        }
+                    }
+                }
+            }
+            return comptes;
+        }
+
         //Requtes database
         //Ajout De Nouveau Contact
         public  void AjoutNouveauContact(Contacts contacts)
@@ -139,8 +184,8 @@ namespace ContactsDALLib
                 {
                     
 
-                    cmd.CommandText = "insert into Contacts (nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,id_Address) " +
-                                      "values (@Name, @Prenom,@Num, @fax,@company, @dateNaissance, @courriel, @profession, @Id_Address)";
+                    cmd.CommandText = "insert into Contacts (nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,id_Address,id_Compte) " +
+                                      "values (@Name, @Prenom,@Num, @fax,@company, @dateNaissance, @courriel, @profession, @Id_Address,@id_compte)";
                     
                     //les champs obligatoires
                     cmd.Parameters.AddWithValue("Name", contacts.Nom);
@@ -148,7 +193,7 @@ namespace ContactsDALLib
                     cmd.Parameters.AddWithValue("Num", contacts.numeroTelephone);
                     cmd.Parameters.AddWithValue("dateNaissance",contacts.DateNaissance);
                     cmd.Parameters.AddWithValue("courriel", contacts.Courriel);
-
+                    cmd.Parameters.AddWithValue("id_compte", contacts.compte.Id);
                     //les champs nullables
                     if (contacts.Fax == null)
                     {
@@ -365,30 +410,30 @@ namespace ContactsDALLib
         }
         
         //retourne les differents pays 
-        public List<string> lesPays()
+        public List<string> lesPays(Compte compte)
         {
-            return this.GetListe("select distinct pays from Addreess");
+            return this.GetListe("select distinct pays from Addreess inner join Contacts on Contacts. id_Address=Addreess.id  where id_Compte =@idCompte", compte);
         }
        
         //retourne les villes
-        public List<string> lesVilles()
+        public List<string> lesVilles(Compte compte)
         {
-            return this.GetListe("select distinct Ville from Addreess");
+            return this.GetListe("select distinct Ville from Addreess inner join Contacts on Contacts. id_Address=Addreess.id  where id_Compte =@idCompte", compte);
         }
 
         //retourne les professions
-        public List<string> LesProfessions()
+        public List<string> LesProfessions(Compte compte)
         {
-            return this.GetListe("select distinct Profession from Contacts");
+            return this.GetListe("select distinct Profession from Contacts  where id_Compte =@idCompte", compte);
         }
 
         //retourne les Entreprises
-        public List<string> lesEntreprises()
+        public List<string> lesEntreprises(Compte compte)
         {
-            return this.GetListe("select distinct Company from Contacts");
+            return this.GetListe("select distinct Company from Contacts where id_Compte =@idCompte",compte);
         }
         //fonction pour simplifier les get des differents element
-        public List<string> GetListe(string requete)
+        public List<string> GetListe(string requete,Compte compte)
         {
             List<string> lst = new List<string>();
             using (SqlConnection conn = new SqlConnection(ChaineConnexion))
@@ -397,6 +442,7 @@ namespace ContactsDALLib
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = requete;
+                    cmd.Parameters.AddWithValue("idCompte", compte.Id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -413,52 +459,52 @@ namespace ContactsDALLib
             return lst;
         }
         //Rechercher
-        public List<Contacts> RechercherContact(string critereDeRechercheePays, string critereDeRechercheVille, string critereDeRechercheProfessions, string critereDeRechercheEntreprise, string TextSaisi,string methodeDeTri)
+        public List<Contacts> RechercherContact(string critereDeRechercheePays, string critereDeRechercheVille, string critereDeRechercheProfessions, string critereDeRechercheEntreprise, string TextSaisi,string methodeDeTri,Compte compte)
         {
             List<Contacts> lst = new List<Contacts>();
             using (SqlConnection conn = new SqlConnection(ChaineConnexion))
             {
                 conn.Open();
                 //cas ou tous les 4 c'est Tout
-                string requete1 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                string requete1 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id" +
-                                     " where nom like @chaineSaisi+'%' or prenom like @chaineSaisi+'%' ";
+                                     " where (nom like @chaineSaisi+'%' or prenom like @chaineSaisi+'%') and id_Compte =@idCompte";
                 string requete2 = requete1;
                 string requete3 = requete2;
                 string requete4 = requete3;
 
                 if (critereDeRechercheePays.CompareTo("Tout") != 0)
                 {
-                    requete1 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                    requete1 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
-                                     "where Pays like '%'+@paysSelect+'%'  and (nom like @chaineSaisi+'%' or prenom like @chaineSaisi+'%') ";
+                                     "where id_Compte =@idCompte and Pays like '%'+@paysSelect+'%'  and (nom like @chaineSaisi+'%' or prenom like @chaineSaisi+'%') ";
                 }
 
 
                 if (critereDeRechercheVille.CompareTo("Tout") != 0)
                 {
-                    requete2 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                    requete2 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
-                                     "where Ville like '%'+@villeSelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
+                                     "where id_Compte =@idCompte and Ville like '%'+@villeSelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
                 }
 
                 if (critereDeRechercheProfessions.CompareTo("Tout") != 0)
                 {
-                    requete3 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                    requete3 = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
-                                     "where Profession like '%'+@professionSelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
+                                     "where id_Compte =@idCompte and Profession like '%'+@professionSelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
                 }
                 
                 if (critereDeRechercheEntreprise.CompareTo("Tout") != 0)
                 {
-                    requete4= "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                    requete4= "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
-                                     "where Company like '%'+@companySelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
+                                     "where id_Compte =@idCompte and Company like '%'+@companySelect+'%' and (nom Like @chaineSaisi+'%' or prenom like @chaineSaisi+'%')";
                 }
                
                 using (SqlCommand cmd = conn.CreateCommand())
@@ -490,6 +536,7 @@ namespace ContactsDALLib
                     cmd.Parameters.AddWithValue("professionSelect", critereDeRechercheProfessions);
                     cmd.Parameters.AddWithValue("companySelect", critereDeRechercheEntreprise);
                     cmd.Parameters.AddWithValue("chaineSaisi", TextSaisi);
+                    cmd.Parameters.AddWithValue("idCompte",compte.Id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -499,7 +546,7 @@ namespace ContactsDALLib
                             contact.Nom = reader.GetString(1);
                             contact.Prenom = reader.GetString(2);
                             contact.numeroTelephone = reader.GetString(3);
-
+                            contact.compte.Id = reader.GetInt32(15);
                             if (reader.GetValue(4) != DBNull.Value)
                             {
                                 contact.Fax = reader.GetString(4);
@@ -590,7 +637,7 @@ namespace ContactsDALLib
         }
 
         //Trier
-        public List<Contacts> ListeTrie(string methodeTri)
+        public List<Contacts> ListeTrie(string methodeTri,Compte compte)
         {
             List<Contacts> lst = new List<Contacts>();
             using (SqlConnection conn = new SqlConnection(ChaineConnexion))
@@ -600,40 +647,46 @@ namespace ContactsDALLib
                 { 
                     if (methodeTri.CompareTo("Prenom Croissant") == 0)
                     {
-                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where id_Compte =@idCompte "+
                                      "order by prenom asc";
                     }
                     else if (methodeTri.CompareTo("Prenom Decroissant") == 0)
                     {
-                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where id_Compte =@idCompte " +
                                      "order by prenom desc";
                     }
                     else if (methodeTri.CompareTo("Nom Croissant") == 0)
                     {
-                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where id_Compte =@idCompte " +
                                      "order by nom asc";
 
                     }
                     else if(methodeTri.CompareTo("Nom Decroissant") == 0)
                     {
-                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                      "from Contacts " +
                                      "left join Addreess on Contacts.id_Address = Addreess.id " +
+                                     "where id_Compte =@idCompte " +
                                      "order by nom desc";
                     }
                     else
                     {
                         //cas de date d'ajout
-                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id " +
+                        cmd.CommandText = "select Contacts.id, nom,prenom,numeroTelephone,Fax,Company,DateDeNaissance,Courriel,Profession,NoAppt,NomRue,CodePostal,Ville,Pays,Addreess.id,id_Compte " +
                                             "from Contacts " +
-                                            "left join Addreess on Contacts.id_Address = Addreess.id ";
+                                            "left join Addreess on Contacts.id_Address = Addreess.id "+
+                                            "where id_Compte =@idCompte" ;
                     }
+                    cmd.Parameters.AddWithValue("idCompte",compte.Id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -643,6 +696,7 @@ namespace ContactsDALLib
                             contact.Nom = reader.GetString(1);
                             contact.Prenom = reader.GetString(2);
                             contact.numeroTelephone = reader.GetString(3);
+                            contact.compte.Id = reader.GetInt32(15);
 
                             if (reader.GetValue(4) != DBNull.Value)
                             {

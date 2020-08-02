@@ -1,0 +1,5 @@
+Avant de compiler 
+	changer d'abord la chaine  de connection pour interagir avec la DB
+	changer aussi le chemin d'acces du fichier lesPays.txt pour recharger le pays dans le fichiers
+
+De Rien...
