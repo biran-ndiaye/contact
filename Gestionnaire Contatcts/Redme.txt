@@ -1,5 +1,8 @@
 Avant de compiler 
 	changer d'abord la chaine  de connection pour interagir avec la DB
 	changer aussi le chemin d'acces du fichier lesPays.txt pour recharger le pays dans le fichiers
+	executer le fichier Sql pour creer la database et les tables
+	et aussi n'oublie pas mettre ContactUI en tantque projet de demarrage 
+
 
 De Rien...
